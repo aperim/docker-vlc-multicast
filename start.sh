@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 if [ -z "${VLC_SOURCE_URL}" ]; then
-    echo "RTSP URL not defined (VLC_SOURCE_URL)"
+    echo "Source URL not defined (VLC_SOURCE_URL)"
     exit 1
 fi
 
@@ -18,11 +18,11 @@ if [ -z "${VLC_BITRATE}" ]; then
 fi
 
 if [ -z "${VLC_SAP_GROUP}" ]; then
-    VLC_SERVICE_GROUP=Streams
+    VLC_SAP_GROUP=Streams
 fi
 
 if [ -z "${VLC_SAP_NAME}" ]; then
-    VLC_SERVICE_GROUP=Video
+    VLC_SAP_NAME=Video
 fi
 
 if [ -z "${VLC_ADAPTIVE_WIDTH}" ]; then
