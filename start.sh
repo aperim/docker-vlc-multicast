@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
-if [ -z "${VLC_RTSP_URL}" ]; then
-    echo "RTSP URL not defined (VLC_RTSP_URL)"
+if [ -z "${VLC_SOURCE_URL}" ]; then
+    echo "RTSP URL not defined (VLC_SOURCE_URL)"
     exit 1
 fi
 
@@ -46,7 +46,7 @@ del all
 
 new stream broadcast enabled
 setup stream option network-caching=4000
-setup stream input ${VLC_RTSP_URL} loop
+setup stream input ${VLC_SOURCE_URL} loop
 setup stream output #transcode{venc=x264{preset=ultrafast},vcodec=h264,threads=${VLC_BITRATE},vb=1000}:duplicate{dst='rtp{access=udp,mux=ts,ttl=15,dst=${VLC_MULTICAST_IP},port=${VLC_MULTICAST_PORT},sdp=sap://,group="${VLC_SAP_GROUP}",name="${VLC_SAP_NAME}"}'}
 
 control stream play
@@ -55,12 +55,12 @@ EOF
 cat << EOF
 Streaming: ${VLC_SAP_GROUP}/${VLC_SAP_NAME}
 Multicast: ${VLC_MULTICAST_IP}:${VLC_MULTICAST_PORT}
-Source: ${VLC_RTSP_URL}
+Source: ${VLC_SOURCE_URL}
 EOF
 
 /usr/bin/vlc -I dummy --drop-late-frames --skip-frames --play-and-exit --no-daemon --adaptive-logic=${VLC_ADAPTIVE_LOGIC} --adaptive-maxwidth=${VLC_ADAPTIVE_WIDTH} --adaptive-maxheight=${VLC_ADAPTIVE_HEIGHT} --adaptive-bw=${VLC_ADAPTIVE_BITRATE} --vlm-conf=/vlc/stream.vlm
 
 cat << EOF
 Stream Finished: ${VLC_SAP_GROUP}/${VLC_SAP_NAME}
-Source of completed stream: ${VLC_RTSP_URL}
+Source of completed stream: ${VLC_SOURCE_URL}
 EOF
