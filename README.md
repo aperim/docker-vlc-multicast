@@ -9,7 +9,7 @@ You, I guess?!
 
 ## How do I do?
 ```bash
-docker run -it --rm --network host -e VLC_SOURCE_URL="http://example.com/stream/exciting_video" docker pull ghcr.io/aperim/vlc-multicast:latest
+docker run -it --rm --network host -e VLC_SOURCE_URL="http://example.com/stream/exciting_video" ghcr.io/aperim/vlc-multicast:latest
 ```
 
 ## That's it?
