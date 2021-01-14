@@ -17,6 +17,14 @@ if [ -z "${VLC_BITRATE}" ]; then
     VLC_BITRATE=1000
 fi
 
+if [ -z "${VLC_CACHE}" ]; then
+    VLC_CACHE=1000
+fi
+
+if [ -z "${VLC_THREADS}" ]; then
+    VLC_CACHE=4
+fi
+
 if [ -z "${VLC_SAP_GROUP}" ]; then
     VLC_SAP_GROUP=Streams
 fi
@@ -45,9 +53,9 @@ cat << EOF > /vlc/stream.vlm
 del all
 
 new stream broadcast enabled
-setup stream option network-caching=4000
+setup stream option network-caching=${VLC_CACHE}
 setup stream input ${VLC_SOURCE_URL} loop
-setup stream output #transcode{venc=x264{preset=ultrafast},vcodec=h264,threads=${VLC_BITRATE},vb=1000}:duplicate{dst='rtp{access=udp,mux=ts,ttl=15,dst=${VLC_MULTICAST_IP},port=${VLC_MULTICAST_PORT},sdp=sap://,group="${VLC_SAP_GROUP}",name="${VLC_SAP_NAME}"}'}
+setup stream output #transcode{venc=x264{preset=ultrafast},vcodec=h264,threads=${VLC_THREADS},vb=${VLC_BITRATE}}:duplicate{dst='rtp{access=udp,mux=ts,ttl=15,dst=${VLC_MULTICAST_IP},port=${VLC_MULTICAST_PORT},sdp=sap://,group="${VLC_SAP_GROUP}",name="${VLC_SAP_NAME}"}'}
 
 control stream play
 EOF
