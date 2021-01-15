@@ -49,6 +49,14 @@ if [ -z "${VLC_ADAPTIVE_LOGIC}" ]; then
     VLC_ADAPTIVE_LOGIC=highest
 fi
 
+if [ -z "${PORT}" ]; then
+    PORT=4212
+fi
+
+if [ -z "${PASSWORD}" ]; then
+    PASSWORD=vlcmulticast
+fi
+
 cat << EOF > /vlc/stream.vlm
 del all
 
@@ -66,7 +74,7 @@ Multicast: ${VLC_MULTICAST_IP}:${VLC_MULTICAST_PORT}
 Source: ${VLC_SOURCE_URL}
 EOF
 
-/usr/bin/vlc -I dummy --drop-late-frames --skip-frames --play-and-exit --no-daemon --adaptive-logic=${VLC_ADAPTIVE_LOGIC} --adaptive-maxwidth=${VLC_ADAPTIVE_WIDTH} --adaptive-maxheight=${VLC_ADAPTIVE_HEIGHT} --adaptive-bw=${VLC_ADAPTIVE_BITRATE} --vlm-conf=/vlc/stream.vlm
+/usr/bin/vlc -I telnet --telnet-password=${PASSWORD} --telnet-port=${PORT} --drop-late-frames --skip-frames --play-and-exit --no-daemon --adaptive-logic=${VLC_ADAPTIVE_LOGIC} --adaptive-maxwidth=${VLC_ADAPTIVE_WIDTH} --adaptive-maxheight=${VLC_ADAPTIVE_HEIGHT} --adaptive-bw=${VLC_ADAPTIVE_BITRATE} --vlm-conf=/vlc/stream.vlm
 
 cat << EOF
 Stream Finished: ${VLC_SAP_GROUP}/${VLC_SAP_NAME}
