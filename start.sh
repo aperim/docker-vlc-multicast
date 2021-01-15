@@ -22,7 +22,7 @@ if [ -z "${VLC_CACHE}" ]; then
 fi
 
 if [ -z "${VLC_THREADS}" ]; then
-    VLC_CACHE=4
+    VLC_THREADS=4
 fi
 
 if [ -z "${VLC_SAP_GROUP}" ]; then
@@ -42,7 +42,7 @@ if [ -z "${VLC_ADAPTIVE_HEIGHT}" ]; then
 fi
 
 if [ -z "${VLC_ADAPTIVE_BITRATE}" ]; then
-    VLC_ADAPTIVE_BITRATE=100000
+    VLC_ADAPTIVE_BITRATE=2048
 fi
 
 if [ -z "${VLC_ADAPTIVE_LOGIC}" ]; then
