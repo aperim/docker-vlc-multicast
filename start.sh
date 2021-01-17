@@ -65,7 +65,7 @@ Multicast: ${VLC_MULTICAST_IP}:${VLC_MULTICAST_PORT}
 Source: ${VLC_SOURCE_URL}
 EOF
 
-/usr/bin/vlc -I telnet --no-repeat --no-loop -vv ${VLC_SOURCE_URL} --network-caching=${VLC_CACHE} --telnet-password=${PASSWORD} --telnet-port=${PORT} --drop-late-frames --skip-frames --play-and-exit --no-daemon --adaptive-logic=${VLC_ADAPTIVE_LOGIC} --adaptive-maxwidth=${VLC_ADAPTIVE_WIDTH} --adaptive-maxheight=${VLC_ADAPTIVE_HEIGHT} --adaptive-bw=${VLC_ADAPTIVE_BITRATE} --sout="${SOUT}" vlc://quit
+/usr/bin/vlc -I telnet --no-repeat --no-loop ${VLC_SOURCE_URL} --network-caching=${VLC_CACHE} --telnet-password=${PASSWORD} --telnet-port=${PORT} --drop-late-frames --skip-frames --play-and-exit --no-daemon --adaptive-logic=${VLC_ADAPTIVE_LOGIC} --adaptive-maxwidth=${VLC_ADAPTIVE_WIDTH} --adaptive-maxheight=${VLC_ADAPTIVE_HEIGHT} --adaptive-bw=${VLC_ADAPTIVE_BITRATE} --sout="${SOUT}" vlc://quit
 
 cat << EOF
 Stream Finished: ${VLC_SAP_GROUP}/${VLC_SAP_NAME}
