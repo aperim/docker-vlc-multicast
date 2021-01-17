@@ -57,16 +57,7 @@ if [ -z "${PASSWORD}" ]; then
     PASSWORD=vlcmulticast
 fi
 
-cat << EOF > /vlc/stream.vlm
-del all
-
-new stream broadcast enabled
-setup stream option network-caching=${VLC_CACHE}
-setup stream input ${VLC_SOURCE_URL} loop
-setup stream output #transcode{venc=x264{preset=ultrafast},vcodec=h264,threads=${VLC_THREADS},vb=${VLC_BITRATE}}:duplicate{dst='rtp{access=udp,mux=ts,ttl=15,dst=${VLC_MULTICAST_IP},port=${VLC_MULTICAST_PORT},sdp=sap://,group="${VLC_SAP_GROUP}",name="${VLC_SAP_NAME}"}'}
-
-control stream play
-EOF
+SOUT="#transcode{venc=x264{preset=ultrafast},vcodec=h264,threads=${VLC_THREADS},vb=${VLC_BITRATE}}:duplicate{dst='rtp{access=udp,mux=ts,ttl=15,dst=${VLC_MULTICAST_IP},port=${VLC_MULTICAST_PORT},sdp=sap://,group=\"${VLC_SAP_GROUP}\",name=\"${VLC_SAP_NAME}\"}'}"
 
 cat << EOF
 Streaming: ${VLC_SAP_GROUP}/${VLC_SAP_NAME}
@@ -74,7 +65,7 @@ Multicast: ${VLC_MULTICAST_IP}:${VLC_MULTICAST_PORT}
 Source: ${VLC_SOURCE_URL}
 EOF
 
-/usr/bin/vlc -I telnet --telnet-password=${PASSWORD} --telnet-port=${PORT} --drop-late-frames --skip-frames --play-and-exit --no-daemon --adaptive-logic=${VLC_ADAPTIVE_LOGIC} --adaptive-maxwidth=${VLC_ADAPTIVE_WIDTH} --adaptive-maxheight=${VLC_ADAPTIVE_HEIGHT} --adaptive-bw=${VLC_ADAPTIVE_BITRATE} --vlm-conf=/vlc/stream.vlm
+/usr/bin/vlc -I telnet --no-repeat --no-loop -vv ${VLC_SOURCE_URL} --network-caching=${VLC_CACHE} --telnet-password=${PASSWORD} --telnet-port=${PORT} --drop-late-frames --skip-frames --play-and-exit --no-daemon --adaptive-logic=${VLC_ADAPTIVE_LOGIC} --adaptive-maxwidth=${VLC_ADAPTIVE_WIDTH} --adaptive-maxheight=${VLC_ADAPTIVE_HEIGHT} --adaptive-bw=${VLC_ADAPTIVE_BITRATE} --sout=${SOUT} vlc://quit
 
 cat << EOF
 Stream Finished: ${VLC_SAP_GROUP}/${VLC_SAP_NAME}
