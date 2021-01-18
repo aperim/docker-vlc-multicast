@@ -14,15 +14,15 @@ if [ -z "${VLC_MULTICAST_PORT}" ]; then
 fi
 
 if [ -z "${VLC_BITRATE}" ]; then
-    VLC_BITRATE=1000
+    VLC_BITRATE=1024
 fi
 
 if [ -z "${VLC_CACHE}" ]; then
-    VLC_CACHE=1000
+    VLC_CACHE=1024
 fi
 
 if [ -z "${VLC_THREADS}" ]; then
-    VLC_THREADS=4
+    VLC_THREADS=$(nproc --all)
 fi
 
 if [ -z "${VLC_SAP_GROUP}" ]; then
@@ -50,7 +50,7 @@ if [ -z "${VLC_ADAPTIVE_LOGIC}" ]; then
 fi
 
 if [ -z "${VLC_X264}" ]; then
-    VLC_X264="preset=ultrafast,tune=zerolatency,keyint=30,bframes=0,ref=1,level=30,profile=baseline,hrd=cbr,crf=20,ratetol=1.0,vbv-maxrate=1200,vbv-bufsize=1200,lookahead=0"
+    VLC_X264="preset=ultrafast,tune=zerolatency,keyint=30,bframes=0,ref=1,level=30,profile=baseline,hrd=cbr,crf=20,ratetol=1.0,vbv-maxrate=${VLC_BITRATE},vbv-bufsize=${VLC_BITRATE},lookahead=0"
 fi
 
 if [ -z "${VLC_FPS}" ]; then
