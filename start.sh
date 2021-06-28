@@ -33,6 +33,10 @@ if [ -z "${VLC_SAP_NAME}" ]; then
     VLC_SAP_NAME=Video
 fi
 
+if [ -z "${VLC_ASPECT_RATIO}" ]; then
+    VLC_ASPECT_RATIO=16:9
+fi
+
 if [ -z "${VLC_ADAPTIVE_WIDTH}" ]; then
     VLC_ADAPTIVE_WIDTH=1280
 fi
@@ -65,12 +69,13 @@ if [ -z "${PASSWORD}" ]; then
     PASSWORD=vlcmulticast
 fi
 
-SOUT="#transcode{width=${VLC_ADAPTIVE_WIDTH},height=${VLC_ADAPTIVE_HEIGHT},scale=Auto,venc=x264{${VLC_X264}},vcodec=h264,fps=${VLC_FPS},threads=${VLC_THREADS},vb=${VLC_BITRATE}}:duplicate{dst='rtp{access=udp,mux=ts,ttl=15,dst=${VLC_MULTICAST_IP},port=${VLC_MULTICAST_PORT},sdp=sap://,group=\"${VLC_SAP_GROUP}\",name=\"${VLC_SAP_NAME}\"}'}"
+SOUT="#transcode{width=${VLC_ADAPTIVE_WIDTH},height=${VLC_ADAPTIVE_HEIGHT},scale=Auto,aspect=${VLC_ASPECT_RATIO},venc=x264{${VLC_X264}},vcodec=h264,fps=${VLC_FPS},threads=${VLC_THREADS},vb=${VLC_BITRATE}}:duplicate{dst='rtp{access=udp,mux=ts,ttl=15,dst=${VLC_MULTICAST_IP},port=${VLC_MULTICAST_PORT},sdp=sap://,group=\"${VLC_SAP_GROUP}\",name=\"${VLC_SAP_NAME}\"}'}"
 
 cat << EOF
 Streaming: ${VLC_SAP_GROUP}/${VLC_SAP_NAME}
 Multicast: rtp://@${VLC_MULTICAST_IP}:${VLC_MULTICAST_PORT}
 Source: ${VLC_SOURCE_URL}
+SOUT: ${SOUT}
 EOF
 
 /usr/bin/vlc --no-disable-screensaver -I telnet --no-repeat --no-loop "${VLC_SOURCE_URL}" --network-caching=${VLC_CACHE} --telnet-password="${PASSWORD}" --telnet-port=${PORT} --drop-late-frames --skip-frames --play-and-exit --no-daemon --adaptive-logic="${VLC_ADAPTIVE_LOGIC}" --adaptive-maxwidth=${VLC_ADAPTIVE_WIDTH} --adaptive-maxheight=${VLC_ADAPTIVE_HEIGHT} --adaptive-bw=${VLC_ADAPTIVE_BITRATE} --sout="${SOUT}" vlc://quit
