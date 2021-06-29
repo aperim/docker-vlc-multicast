@@ -26,7 +26,8 @@ jobs:
           fi
 
           echo ::set-output name=version::${VERSION}
-          echo ::set-output name=build_date::$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
+          echo ::set-output name=build_date::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+          echo ::set-output name=vcs_ref::${GITHUB_SHA::8}
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -57,7 +58,7 @@ jobs:
           build-args: |
               VERSION=${{ steps.prepare.outputs.version }}
               BUILD_DATE=${{ steps.prepare.outputs.build_date }}
-              VCS_REF=${GITHUB_SHA::8}
+              VCS_REF=${{ steps.prepare.outputs.vcs_ref }}
           tags: |
             aperimau/vlc-multicast:${{ steps.prepare.outputs.version }}
             aperimau/vlc-multicast:latest

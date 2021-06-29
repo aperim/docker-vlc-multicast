@@ -61,6 +61,10 @@ if [ -z "${VLC_FPS}" ]; then
     VLC_FPS=15
 fi
 
+if [ -z "${VLC_RC_PORT}" ]; then
+    VLC_RC_PORT=10101
+fi
+
 if [ -z "${PORT}" ]; then
     PORT=4212
 fi
@@ -69,7 +73,7 @@ if [ -z "${PASSWORD}" ]; then
     PASSWORD=vlcmulticast
 fi
 
-SOUT="#transcode{vfilter=canvas{width=${VLC_ADAPTIVE_WIDTH},height=${VLC_ADAPTIVE_HEIGHT}},venc=x264{${VLC_X264}},vcodec=h264,fps=${VLC_FPS},threads=${VLC_THREADS},vb=${VLC_BITRATE}}:duplicate{dst='rtp{access=udp,mux=ts,ttl=15,dst=${VLC_MULTICAST_IP},port=${VLC_MULTICAST_PORT},sdp=sap://,group=\"${VLC_SAP_GROUP}\",name=\"${VLC_SAP_NAME}\"}'}"
+SOUT="#transcode{vfilter=canvas{width=${VLC_ADAPTIVE_WIDTH},height=${VLC_ADAPTIVE_HEIGHT}},aspect=1.0,venc=x264{${VLC_X264}},vcodec=h264,fps=${VLC_FPS},threads=${VLC_THREADS},vb=${VLC_BITRATE}}:duplicate{dst='rtp{access=udp,mux=ts,ttl=15,dst=${VLC_MULTICAST_IP},port=${VLC_MULTICAST_PORT},sdp=sap://,group=\"${VLC_SAP_GROUP}\",name=\"${VLC_SAP_NAME}\"}'}"
 
 cat << EOF
 Streaming: ${VLC_SAP_GROUP}/${VLC_SAP_NAME}
@@ -78,7 +82,7 @@ Source: ${VLC_SOURCE_URL}
 SOUT: ${SOUT}
 EOF
 
-/usr/bin/vlc --no-disable-screensaver -I telnet --no-repeat --no-loop "${VLC_SOURCE_URL}" --network-caching=${VLC_CACHE} --telnet-password="${PASSWORD}" --telnet-port=${PORT} --drop-late-frames --skip-frames --play-and-exit --no-daemon --adaptive-logic="${VLC_ADAPTIVE_LOGIC}" --adaptive-maxwidth=${VLC_ADAPTIVE_WIDTH} --adaptive-maxheight=${VLC_ADAPTIVE_HEIGHT} --adaptive-bw=${VLC_ADAPTIVE_BITRATE} --sout="${SOUT}" vlc://quit
+/usr/bin/vlc --no-disable-screensaver -I telnet --rc-host 0.0.0.0:${VLC_RC_PORT} --no-repeat --no-loop "${VLC_SOURCE_URL}" --network-caching=${VLC_CACHE} --telnet-password="${PASSWORD}" --telnet-port=${PORT} --drop-late-frames --skip-frames --play-and-exit --no-daemon --adaptive-logic="${VLC_ADAPTIVE_LOGIC}" --adaptive-maxwidth=${VLC_ADAPTIVE_WIDTH} --adaptive-maxheight=${VLC_ADAPTIVE_HEIGHT} --adaptive-bw=${VLC_ADAPTIVE_BITRATE} --sout="${SOUT}" vlc://quit
 
 cat << EOF
 Stream Finished: ${VLC_SAP_GROUP}/${VLC_SAP_NAME}
