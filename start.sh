@@ -73,7 +73,7 @@ if [ -z "${PASSWORD}" ]; then
     PASSWORD=vlcmulticast
 fi
 
-SOUT="#transcode{aspect-ratio=${VLC_ASPECT_RATIO},vfilter=canvas{width=${VLC_ADAPTIVE_WIDTH},height=${VLC_ADAPTIVE_HEIGHT}},venc=x264{${VLC_X264}},vcodec=h264,fps=${VLC_FPS},threads=${VLC_THREADS},vb=${VLC_BITRATE},scale=1,acodec=mp4a,ab=128,channels=2}:duplicate{dst='rtp{access=udp,mux=ts,ttl=15,dst=${VLC_MULTICAST_IP},port=${VLC_MULTICAST_PORT},sdp=sap://,group=\"${VLC_SAP_GROUP}\",name=\"${VLC_SAP_NAME}\"}'}"
+SOUT="#transcode{aspect-ratio=${VLC_ASPECT_RATIO},vfilter=canvas{width=${VLC_ADAPTIVE_WIDTH},height=${VLC_ADAPTIVE_HEIGHT}},venc=x264{${VLC_X264}},vcodec=h264,fps=${VLC_FPS},threads=${VLC_THREADS},vb=${VLC_BITRATE},scale=1}:duplicate{dst='rtp{access=udp,mux=ts,ttl=15,dst=${VLC_MULTICAST_IP},port=${VLC_MULTICAST_PORT},sdp=sap://,group=\"${VLC_SAP_GROUP}\",name=\"${VLC_SAP_NAME}\"}'}"
 
 cat << EOF
 Streaming: ${VLC_SAP_GROUP}/${VLC_SAP_NAME}
