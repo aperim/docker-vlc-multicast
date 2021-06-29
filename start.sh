@@ -73,7 +73,7 @@ if [ -z "${PASSWORD}" ]; then
     PASSWORD=vlcmulticast
 fi
 
-SOUT="#transcode{venc=x264{${VLC_X264}},scale=Auto,senc=any,soverlay,threads=${VLC_THREADS},sfilter=audiobargraph_v,afilter=audiobargraph_a{bargraph=1},width=${VLC_ADAPTIVE_WIDTH},height=${VLC_ADAPTIVE_HEIGHT},vfilter=canvas{width=${VLC_ADAPTIVE_WIDTH},height=${VLC_ADAPTIVE_HEIGHT},aspect=${VLC_ASPECT_RATIO}},vcodec=h264,fps=${VLC_FPS},vb=${VLC_BITRATE}}:duplicate{dst='rtp{access=udp,mux=ts,ttl=15,dst=${VLC_MULTICAST_IP},port=${VLC_MULTICAST_PORT},sdp=sap://,group=\"${VLC_SAP_GROUP}\",name=\"${VLC_SAP_NAME}\"}'}"
+SOUT="#transcode{venc=x264{${VLC_X264}},scale=Auto,senc=any,soverlay,threads=${VLC_THREADS},sfilter=audiobargraph_v{barWidth=30,position=1},afilter=audiobargraph_a{bargraph=1,port=${VLC_RC_PORT}},width=${VLC_ADAPTIVE_WIDTH},height=${VLC_ADAPTIVE_HEIGHT},vfilter=canvas{width=${VLC_ADAPTIVE_WIDTH},height=${VLC_ADAPTIVE_HEIGHT},aspect=${VLC_ASPECT_RATIO}},vcodec=h264,fps=${VLC_FPS},vb=${VLC_BITRATE}}:duplicate{dst='rtp{access=udp,mux=ts,ttl=15,dst=${VLC_MULTICAST_IP},port=${VLC_MULTICAST_PORT},sdp=sap://,group=\"${VLC_SAP_GROUP}\",name=\"${VLC_SAP_NAME}\"}'}"
 
 cat << EOF
 Streaming: ${VLC_SAP_GROUP}/${VLC_SAP_NAME}
