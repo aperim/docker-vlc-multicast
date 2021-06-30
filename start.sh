@@ -52,7 +52,7 @@ if [ -z "${VLC_ADAPTIVE_BITRATE}" ]; then
 fi
 
 if [ -z "${VLC_AUDIO_BITRATE}" ]; then
-    VLC_AUDIO_BITRATE=256
+    VLC_AUDIO_BITRATE=192
 fi
 
 if [ -z "${VLC_AUDIO_CHANNELS}" ]; then
@@ -103,7 +103,7 @@ Source: ${VLC_SOURCE_URL}
 SOUT: ${SOUT}
 EOF
 
-${VLC} -I telnet --verbose 3 --no-disable-screensaver --extraintf="rc" --rc-host="127.0.0.1:${VLC_RC_PORT}" --no-repeat --no-loop "${VLC_SOURCE_URL}" --network-caching=${VLC_CACHE} --telnet-password="${PASSWORD}" --telnet-port=${PORT} --drop-late-frames --skip-frames --play-and-exit --no-daemon --adaptive-logic="${VLC_ADAPTIVE_LOGIC}" --adaptive-maxwidth=${VLC_ADAPTIVE_WIDTH} --adaptive-maxheight=${VLC_ADAPTIVE_HEIGHT} --adaptive-bw=${VLC_ADAPTIVE_BITRATE} ${VLC_EXTRA_OPTIONS_AUDIO_FILTER} --sout="${SOUT}" vlc://quit
+${VLC} -I telnet --verbose 3 --no-disable-screensaver --extraintf="rc" --rc-host="0.0.0.0:${VLC_RC_PORT}" --sout-avcodec-strict=-2 --no-repeat --no-loop "${VLC_SOURCE_URL}" --network-caching=${VLC_CACHE} --telnet-password="${PASSWORD}" --telnet-port=${PORT} --drop-late-frames --skip-frames --play-and-exit --no-daemon --adaptive-logic="${VLC_ADAPTIVE_LOGIC}" --adaptive-maxwidth=${VLC_ADAPTIVE_WIDTH} --adaptive-maxheight=${VLC_ADAPTIVE_HEIGHT} --adaptive-bw=${VLC_ADAPTIVE_BITRATE} ${VLC_EXTRA_OPTIONS_AUDIO_FILTER} --sout="${SOUT}" vlc://quit
 
 cat << EOF
 Stream Finished: ${VLC_SAP_GROUP}/${VLC_SAP_NAME}
