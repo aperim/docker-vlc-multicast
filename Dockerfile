@@ -3,7 +3,9 @@ ARG BUILD_DATE
 ARG VCS_REF
 ARG VERSION
 ARG PORT=4212
+ARG RC_PORT=5212
 ENV PORT=${PORT}
+ENV VLC_RC_PORT=${RC_PORT}
 
 LABEL org.opencontainers.image.source https://github.com/aperim/docker-vlc-multicast
 LABEL org.label-schema.build-date=$BUILD_DATE \
@@ -19,9 +21,9 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
 EXPOSE ${PORT}
 
 RUN sed -i -e 's/v[[:digit:]]\..*\//edge\//g' /etc/apk/repositories && \
-  apk --no-cache add vlc ffmpeg
+  apk --no-cache add vlc ffmpeg mpg123
 
-# RUN apk --no-cache add vlc ffmpeg
+# RUN apk --no-cache add vlc ffmpeg mpg123
 
 RUN adduser -h /vlc -g "VLC User" -s /sbin/nologin -D vlc vlc
 
