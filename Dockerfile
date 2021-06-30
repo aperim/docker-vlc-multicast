@@ -18,8 +18,10 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
 
 EXPOSE ${PORT}
 
-RUN sed -i -e 's/v[[:digit:]]\..*\//edge\//g' /etc/apk/repositories && \
-  apk --no-cache add vlc
+# RUN sed -i -e 's/v[[:digit:]]\..*\//edge\//g' /etc/apk/repositories && \
+#   apk --no-cache add vlc
+
+RUN apk --no-cache add vlc
 
 RUN adduser -h /vlc -g "VLC User" -s /sbin/nologin -D vlc vlc
 

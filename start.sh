@@ -94,7 +94,7 @@ VLC_EXTRA_OPTIONS_AUDIO_FILTER="--audiobargraph_a-bargraph 1 --audiobargraph_a-a
 
 #acodec=${VLC_AUDIO_CODEC},ab=${VLC_AUDIO_BITRATE},channels=${VLC_AUDIO_CHANNELS},deinterlace
 
-SOUT="#transcode{venc=x264{${VLC_X264}},scale=1,acodec=${VLC_AUDIO_CODEC},threads=${VLC_THREADS},sfilter=${VLC_SFILTER},width=${VLC_ADAPTIVE_WIDTH},height=${VLC_ADAPTIVE_HEIGHT},vfilter=${VLC_VFILTER},vcodec=${VLC_VIDEO_CODEC},fps=${VLC_FPS},vb=${VLC_BITRATE},afilter=${VLC_AFILTER}}:duplicate{dst=${VLC_DESTINATION}}"
+SOUT="#transcode{venc=x264{${VLC_X264}},scale=1,acodec=${VLC_AUDIO_CODEC},ab=${VLC_AUDIO_BITRATE},channels=${VLC_AUDIO_CHANNELS},threads=${VLC_THREADS},sfilter=${VLC_SFILTER},width=${VLC_ADAPTIVE_WIDTH},height=${VLC_ADAPTIVE_HEIGHT},vfilter=${VLC_VFILTER},vcodec=${VLC_VIDEO_CODEC},fps=${VLC_FPS},vb=${VLC_BITRATE},afilter=${VLC_AFILTER}}:duplicate{dst=${VLC_DESTINATION}}"
 
 cat << EOF
 Streaming: ${VLC_SAP_GROUP}/${VLC_SAP_NAME}
