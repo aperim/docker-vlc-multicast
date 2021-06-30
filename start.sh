@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+VLC=/usr/bin/vlc
+
 if [ -z "${VLC_SOURCE_URL}" ]; then
     echo "Source URL not defined (VLC_SOURCE_URL)"
     exit 1
@@ -49,6 +51,14 @@ if [ -z "${VLC_ADAPTIVE_BITRATE}" ]; then
     VLC_ADAPTIVE_BITRATE=2048
 fi
 
+if [ -z "${VLC_AUDIO_BITRATE}" ]; then
+    VLC_AUDIO_BITRATE=192
+fi
+
+if [ -z "${VLC_AUDIO_CHANNELS}" ]; then
+    VLC_AUDIO_CHANNELS=2
+fi
+
 if [ -z "${VLC_ADAPTIVE_LOGIC}" ]; then
     VLC_ADAPTIVE_LOGIC=highest
 fi
@@ -73,7 +83,16 @@ if [ -z "${PASSWORD}" ]; then
     PASSWORD=vlcmulticast
 fi
 
-SOUT="#transcode{venc=x264{${VLC_X264}},scale=Auto,senc=any,soverlay,threads=${VLC_THREADS},sfilter=audiobargraph_v{barWidth=30,position=1},afilter=audiobargraph_a{bargraph=1,port=${VLC_RC_PORT}},width=${VLC_ADAPTIVE_WIDTH},height=${VLC_ADAPTIVE_HEIGHT},vfilter=canvas{width=${VLC_ADAPTIVE_WIDTH},height=${VLC_ADAPTIVE_HEIGHT},aspect=${VLC_ASPECT_RATIO}},vcodec=h264,fps=${VLC_FPS},vb=${VLC_BITRATE}}:duplicate{dst='rtp{access=udp,mux=ts,ttl=15,dst=${VLC_MULTICAST_IP},port=${VLC_MULTICAST_PORT},sdp=sap://,group=\"${VLC_SAP_GROUP}\",name=\"${VLC_SAP_NAME}\"}'}"
+VLC_SFILTER="audiobargraph_v{barWidth=20,position=1,alarm=1}"
+# VLC_AFILTER="audiobargraph_a{bargraph=1,address=127.0.0.1,port=${VLC_RC_PORT},connection_reset=1,bargraph_repetition=22,silence=1,repetition_time=1000,time_window=10000,alarm_threshold=0.01}"
+VLC_AFILTER="{audiobargraph_a}"
+VLC_VFILTER="canvas{width=${VLC_ADAPTIVE_WIDTH},height=${VLC_ADAPTIVE_HEIGHT},aspect=${VLC_ASPECT_RATIO}}"
+VLC_VIDEO_CODEC="h264"
+VLC_AUDIO_CODEC="mp2a"
+VLC_DESTINATION="'rtp{access=udp,mux=ts,ttl=15,dst=${VLC_MULTICAST_IP},port=${VLC_MULTICAST_PORT},sdp=sap://,group=\"${VLC_SAP_GROUP}\",name=\"${VLC_SAP_NAME}\"}'"
+VLC_EXTRA_OPTIONS_AUDIO_FILTER="--audiobargraph_a-bargraph 1 --audiobargraph_a-address 127.0.0.1 --audiobargraph_a-port ${VLC_RC_PORT} --audiobargraph_a-connection_reset 1 --audiobargraph_a-bargraph_repetition 1 --audiobargraph_a-silence 1 --audiobargraph_a-repetition_time 1000 --audiobargraph_a-time_window=10000 --audiobargraph_a-alarm_threshold 0.01"
+
+SOUT="#transcode{venc=x264{${VLC_X264}},acodec=${VLC_AUDIO_CODEC},ab=${VLC_AUDIO_BITRATE},scale=1,channels=${VLC_AUDIO_CHANNELS},deinterlace,threads=${VLC_THREADS},sfilter=${VLC_SFILTER},width=${VLC_ADAPTIVE_WIDTH},height=${VLC_ADAPTIVE_HEIGHT},vfilter=${VLC_VFILTER},vcodec=${VLC_VIDEO_CODEC},fps=${VLC_FPS},vb=${VLC_BITRATE},afilter=${VLC_AFILTER}}:duplicate{dst=${VLC_DESTINATION}}"
 
 cat << EOF
 Streaming: ${VLC_SAP_GROUP}/${VLC_SAP_NAME}
@@ -82,7 +101,9 @@ Source: ${VLC_SOURCE_URL}
 SOUT: ${SOUT}
 EOF
 
-/usr/bin/vlc --no-disable-screensaver --audio-filter=audiobargraph_a --audiobargraph_a-bargraph=1 --sub-source=audiobargraph_v -I telnet --rc-host 0.0.0.0:${VLC_RC_PORT} --no-repeat --no-loop "${VLC_SOURCE_URL}" --network-caching=${VLC_CACHE} --telnet-password="${PASSWORD}" --telnet-port=${PORT} --drop-late-frames --skip-frames --play-and-exit --no-daemon --adaptive-logic="${VLC_ADAPTIVE_LOGIC}" --adaptive-maxwidth=${VLC_ADAPTIVE_WIDTH} --adaptive-maxheight=${VLC_ADAPTIVE_HEIGHT} --adaptive-bw=${VLC_ADAPTIVE_BITRATE} --sout="${SOUT}" vlc://quit
+#--rc-host "localhost:${VLC_RC_PORT}" --rc-quiet
+
+${VLC} -I telnet --verbose 3 --no-disable-screensaver --extraintf="rc" --rc-host="0.0.0.0:${VLC_RC_PORT}" --no-repeat --no-loop "${VLC_SOURCE_URL}" --network-caching=${VLC_CACHE} --telnet-password="${PASSWORD}" --telnet-port=${PORT} --drop-late-frames --skip-frames --play-and-exit --no-daemon --adaptive-logic="${VLC_ADAPTIVE_LOGIC}" --adaptive-maxwidth=${VLC_ADAPTIVE_WIDTH} --adaptive-maxheight=${VLC_ADAPTIVE_HEIGHT} --adaptive-bw=${VLC_ADAPTIVE_BITRATE} ${VLC_EXTRA_OPTIONS_AUDIO_FILTER} --sout="${SOUT}" vlc://quit
 
 cat << EOF
 Stream Finished: ${VLC_SAP_GROUP}/${VLC_SAP_NAME}
