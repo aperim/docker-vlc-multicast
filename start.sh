@@ -69,7 +69,7 @@ if [ -z "${VLC_X264}" ]; then
 fi
 
 if [ -z "${VLC_FPS}" ]; then
-    VLC_FPS=10
+    VLC_FPS=20
 fi
 
 if [ -z "${VLC_RC_PORT}" ]; then
@@ -102,7 +102,7 @@ VLC_DESTINATION="'rtp{access=udp,mux=ts,ttl=15,dst=${VLC_MULTICAST_IP},port=${VL
 VLC_SCALE="1"
 
 VLC_EXTRA_OPTIONS_AUDIO_FILTER="--audiobargraph_a-bargraph 1 --audiobargraph_a-bargraph_repetition 1 --audiobargraph_a-silence 1 --audiobargraph_a-repetition_time 1000 --audiobargraph_a-time_window=10000 --audiobargraph_a-alarm_threshold 0.01"
-VLC_AVCODEC_OPTIONS="--avcodec-dr 0 --avcodec-hurry-up 1 --avcodec-skip-frame 1 --avcodec-skip-idct 1 --avcodec-fast 1 --avcodec-threads ${VLC_THREADS} --sout-avcodec-strict -2"
+VLC_AVCODEC_OPTIONS="--avcodec-dr 0 --avcodec-corrupted 1 --avcodec-hurry-up 1 --avcodec-skip-frame 0 --avcodec-skip-idct 0 --avcodec-fast 1 --avcodec-threads ${VLC_THREADS} --sout-avcodec-strict -2"
 # VLC_AVCODEC_OPTIONS=""
 
 if [ ! -z "$VLC_SFILTER" ]; then
