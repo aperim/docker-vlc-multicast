@@ -53,7 +53,7 @@ if [ -z "${VLC_ADAPTIVE_BITRATE}" ]; then
 fi
 
 if [ -z "${VLC_AUDIO_BITRATE}" ]; then
-    VLC_AUDIO_BITRATE=192
+    VLC_AUDIO_BITRATE=256
 fi
 
 if [ -z "${VLC_AUDIO_CHANNELS}" ]; then
@@ -91,7 +91,8 @@ fi
 VLC_VENC="x264"
 VLC_AENC="ffmpeg"
 VLC_VIDEO_CODEC="h264"
-VLC_AUDIO_CODEC="mp4a"
+VLC_AUDIO_CODEC="mpga"
+VLC_AUDIO_SAMPLERATE="44100"
 
 VLC_SFILTER="audiobargraph_v{barWidth=20,position=1,alarm=1}"
 # VLC_AFILTER="audiobargraph_a{bargraph=1,address=127.0.0.1,port=${VLC_RC_PORT},connection_reset=1,bargraph_repetition=22,silence=1,repetition_time=1000,time_window=10000,alarm_threshold=0.01}"
@@ -182,6 +183,12 @@ else
     VLC_AUDIO_CHANNELS=""
 fi
 
+if [ ! -z "$VLC_AUDIO_SAMPLERATE" ]; then
+    VLC_AUDIO_SAMPLERATE=",samplerate=${VLC_AUDIO_SAMPLERATE}"
+else
+    VLC_AUDIO_SAMPLERATE=""
+fi
+
 if [ ! -z "$VLC_FPS" ]; then
     VLC_FPS=",fps=${VLC_FPS}"
 else
@@ -207,7 +214,7 @@ else
 fi
 
 
-SOUT="#transcode{${VLC_THREADS}${VLC_VENC}${VLC_AENC}${VLC_SCALE}${VLC_VIDEO_CODEC}${VLC_AUDIO_CODEC}${VLC_AUDIO_BITRATE}${VLC_AUDIO_CHANNELS}${VLC_FPS}${VLC_BITRATE}${VLC_AFILTER}${VLC_SFILTER}${VLC_VFILTER}${VLC_WIDTH}${VLC_HEIGHT}}:duplicate{${VLC_DESTINATION}}"
+SOUT="#transcode{${VLC_THREADS}${VLC_VENC}${VLC_AENC}${VLC_SCALE}${VLC_VIDEO_CODEC}${VLC_AUDIO_CODEC}${VLC_AUDIO_BITRATE}${VLC_AUDIO_SAMPLERATE}${VLC_AUDIO_CHANNELS}${VLC_FPS}${VLC_BITRATE}${VLC_AFILTER}${VLC_SFILTER}${VLC_VFILTER}${VLC_WIDTH}${VLC_HEIGHT}}:duplicate{${VLC_DESTINATION}}"
 
 cat << EOF
 Streaming: ${VLC_SAP_GROUP}/${VLC_SAP_NAME}
