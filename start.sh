@@ -100,7 +100,7 @@ VLC_VFILTER="canvas{width=${VLC_ADAPTIVE_WIDTH},height=${VLC_ADAPTIVE_HEIGHT},as
 VLC_DESTINATION="'rtp{access=udp,mux=ts,ttl=15,dst=${VLC_MULTICAST_IP},port=${VLC_MULTICAST_PORT},sdp=sap://,group=\"${VLC_SAP_GROUP}\",name=\"${VLC_SAP_NAME}\"}'"
 VLC_SCALE="1"
 
-VLC_EXTRA_OPTIONS_AUDIO_FILTER="--audiobargraph_a-bargraph 1 --audiobargraph_a-address 127.0.0.1 --audiobargraph_a-port ${VLC_RC_PORT} --audiobargraph_a-connection_reset 1 --audiobargraph_a-bargraph_repetition 4 --audiobargraph_a-silence 1 --audiobargraph_a-repetition_time 1000 --audiobargraph_a-time_window=10000 --audiobargraph_a-alarm_threshold 0.01"
+VLC_EXTRA_OPTIONS_AUDIO_FILTER="--audiobargraph_a-bargraph 1 --audiobargraph_a-bargraph_repetition 1 --audiobargraph_a-silence 1 --audiobargraph_a-repetition_time 1000 --audiobargraph_a-time_window=10000 --audiobargraph_a-alarm_threshold 0.01"
 VLC_AVCODEC_OPTIONS="--avcodec-dr 0 --avcodec-hurry-up 1 --avcodec-skip-frame 1 --avcodec-skip-idct 1 --avcodec-fast 1 --avcodec-threads ${VLC_THREADS} --sout-avcodec-strict -2"
 # VLC_AVCODEC_OPTIONS=""
 
@@ -216,7 +216,7 @@ Source: ${VLC_SOURCE_URL}
 SOUT: ${SOUT}
 EOF
 
-${VLC} -I telnet --verbose ${VLC_VERBOSE} --no-disable-screensaver --extraintf="rc" --rc-host="0.0.0.0:${VLC_RC_PORT}" ${VLC_AVCODEC_OPTIONS} --no-repeat --no-loop "${VLC_SOURCE_URL}" --network-caching=${VLC_CACHE} --telnet-password="${PASSWORD}" --telnet-port=${PORT} --drop-late-frames --skip-frames --play-and-exit --no-daemon --adaptive-logic="${VLC_ADAPTIVE_LOGIC}" --adaptive-maxwidth=${VLC_ADAPTIVE_WIDTH} --adaptive-maxheight=${VLC_ADAPTIVE_HEIGHT} --adaptive-bw=${VLC_ADAPTIVE_BITRATE} ${VLC_EXTRA_OPTIONS_AUDIO_FILTER} --sout="${SOUT}" vlc://quit
+${VLC} -I telnet --verbose ${VLC_VERBOSE} --no-disable-screensaver --extraintf="rc" --rc-host="127.0.0.1:${VLC_RC_PORT}" ${VLC_AVCODEC_OPTIONS} --no-repeat --no-loop "${VLC_SOURCE_URL}" --network-caching=${VLC_CACHE} --telnet-password="${PASSWORD}" --telnet-port=${PORT} --drop-late-frames --skip-frames --play-and-exit --no-daemon --adaptive-logic="${VLC_ADAPTIVE_LOGIC}" --adaptive-maxwidth=${VLC_ADAPTIVE_WIDTH} --adaptive-maxheight=${VLC_ADAPTIVE_HEIGHT} --adaptive-bw=${VLC_ADAPTIVE_BITRATE} ${VLC_EXTRA_OPTIONS_AUDIO_FILTER} --sout="${SOUT}" vlc://quit
 
 cat << EOF
 Stream Finished: ${VLC_SAP_GROUP}/${VLC_SAP_NAME}
