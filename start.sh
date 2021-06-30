@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
-VLC=/Applications/VLC.app/Contents/MacOS/VLC
-#VLC=/usr/bin/vlc
+# VLC=/Applications/VLC.app/Contents/MacOS/VLC
+VLC=/usr/bin/vlc
 
 if [ -z "${VLC_SOURCE_URL}" ]; then
     echo "Source URL not defined (VLC_SOURCE_URL)"
