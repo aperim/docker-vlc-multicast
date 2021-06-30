@@ -88,13 +88,13 @@ VLC_SFILTER="audiobargraph_v{barWidth=20,position=1,alarm=1}"
 VLC_AFILTER="{audiobargraph_a}"
 VLC_VFILTER="canvas{width=${VLC_ADAPTIVE_WIDTH},height=${VLC_ADAPTIVE_HEIGHT},aspect=${VLC_ASPECT_RATIO}}"
 VLC_VIDEO_CODEC="h264"
-VLC_AUDIO_CODEC="mp2a"
+VLC_AUDIO_CODEC="mp4a"
 VLC_DESTINATION="'rtp{access=udp,mux=ts,ttl=15,dst=${VLC_MULTICAST_IP},port=${VLC_MULTICAST_PORT},sdp=sap://,group=\"${VLC_SAP_GROUP}\",name=\"${VLC_SAP_NAME}\"}'"
 VLC_EXTRA_OPTIONS_AUDIO_FILTER="--audiobargraph_a-bargraph 1 --audiobargraph_a-address 127.0.0.1 --audiobargraph_a-port ${VLC_RC_PORT} --audiobargraph_a-connection_reset 1 --audiobargraph_a-bargraph_repetition 1 --audiobargraph_a-silence 1 --audiobargraph_a-repetition_time 1000 --audiobargraph_a-time_window=10000 --audiobargraph_a-alarm_threshold 0.01"
 
 #acodec=${VLC_AUDIO_CODEC},ab=${VLC_AUDIO_BITRATE},channels=${VLC_AUDIO_CHANNELS},deinterlace
 
-SOUT="#transcode{venc=x264{${VLC_X264}},scale=1,threads=${VLC_THREADS},sfilter=${VLC_SFILTER},width=${VLC_ADAPTIVE_WIDTH},height=${VLC_ADAPTIVE_HEIGHT},vfilter=${VLC_VFILTER},vcodec=${VLC_VIDEO_CODEC},fps=${VLC_FPS},vb=${VLC_BITRATE},afilter=${VLC_AFILTER}}:duplicate{dst=${VLC_DESTINATION}}"
+SOUT="#transcode{venc=x264{${VLC_X264}},scale=1,acodec=${VLC_AUDIO_CODEC},ab=${VLC_AUDIO_BITRATE},channels=${VLC_AUDIO_CHANNELS},threads=${VLC_THREADS},sfilter=${VLC_SFILTER},width=${VLC_ADAPTIVE_WIDTH},height=${VLC_ADAPTIVE_HEIGHT},vfilter=${VLC_VFILTER},vcodec=${VLC_VIDEO_CODEC},fps=${VLC_FPS},vb=${VLC_BITRATE},afilter=${VLC_AFILTER}}:duplicate{dst=${VLC_DESTINATION}}"
 
 cat << EOF
 Streaming: ${VLC_SAP_GROUP}/${VLC_SAP_NAME}
