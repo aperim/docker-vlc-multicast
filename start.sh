@@ -39,6 +39,10 @@ if [ -z "${VLC_SAP_DESCRIPTION}" ]; then
     VLC_SAP_DESCRIPTION="A demonstration stream."
 fi
 
+if [ -z "${VLC_TTL}" ]; then
+    VLC_TTL=15
+fi
+
 if [ -z "${VLC_ASPECT_RATIO}" ]; then
     VLC_ASPECT_RATIO=16:9
 fi
