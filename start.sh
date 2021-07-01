@@ -98,12 +98,12 @@ VLC_SFILTER="audiobargraph_v{barWidth=20,position=1,alarm=1}"
 VLC_AFILTER="{audiobargraph_a}"
 VLC_VFILTER="canvas{width=${VLC_ADAPTIVE_WIDTH},height=${VLC_ADAPTIVE_HEIGHT},aspect=${VLC_ASPECT_RATIO}}"
 VLC_DESTINATION_RTP="'rtp{proto=udp,mux=ts,ttl=15,dst=${VLC_MULTICAST_IP},port=${VLC_MULTICAST_PORT},sdp=sap://,group=\"${VLC_SAP_GROUP}\",name=\"${VLC_SAP_NAME}\"}'"
-VLC_DESTINATION_STANDARD="standard{access=udp{caching=1000,ttl=15},mux=ts,dst=${VLC_MULTICAST_IP}:${VLC_MULTICAST_PORT},sap,group=${VLC_SAP_GROUP},name=${VLC_SAP_NAME}}"
+VLC_DESTINATION_STANDARD="standard{access=udp{caching=1000,ttl=15},mux=ts{use-key-frames},dst=${VLC_MULTICAST_IP}:${VLC_MULTICAST_PORT},sap,group=${VLC_SAP_GROUP},name=${VLC_SAP_NAME}}"
 VLC_DESTINATION=${VLC_DESTINATION_STANDARD}
 VLC_SCALE="1"
 
-VLC_EXTRA_OPTIONS_AUDIO_FILTER="--audiobargraph_a-bargraph 1 --audiobargraph_a-bargraph_repetition 1 --audiobargraph_a-silence 1 --audiobargraph_a-repetition_time 1000 --audiobargraph_a-time_window=10000 --audiobargraph_a-alarm_threshold 0.01"
-VLC_AVCODEC_OPTIONS="--avcodec-dr 0 --avcodec-corrupted 1 --avcodec-hurry-up 1 --avcodec-skip-frame 0 --avcodec-skip-idct 0 --avcodec-fast 1 --avcodec-threads ${VLC_THREADS} --sout-avcodec-strict -2"
+VLC_EXTRA_OPTIONS_AUDIO_FILTER="--audiobargraph_a-bargraph=1 --audiobargraph_a-bargraph_repetition=1 --audiobargraph_a-silence=1 --audiobargraph_a-repetition_time=1000 --audiobargraph_a-time_window=10000 --audiobargraph_a-alarm_threshold=0.01"
+VLC_AVCODEC_OPTIONS="--avcodec-dr --avcodec-corrupted --avcodec-hurry-up --avcodec-skip-frame=1 --avcodec-skip-idct=1 --avcodec-fast --avcodec-threads=${VLC_THREADS} --sout-avcodec-strict=-2"
 # VLC_AVCODEC_OPTIONS=""
 
 if [ ! -z "$VLC_SFILTER" ]; then
@@ -224,7 +224,7 @@ Source: ${VLC_SOURCE_URL}
 SOUT: ${SOUT}
 EOF
 
-${VLC} -I telnet --verbose ${VLC_VERBOSE} --no-disable-screensaver --extraintf="rc" --rc-host="127.0.0.1:${VLC_RC_PORT}" ${VLC_AVCODEC_OPTIONS} --no-repeat --no-loop "${VLC_SOURCE_URL}" --network-caching=${VLC_CACHE} --telnet-password="${PASSWORD}" --telnet-port=${PORT} --drop-late-frames --skip-frames --play-and-exit --no-daemon --adaptive-logic="${VLC_ADAPTIVE_LOGIC}" --adaptive-maxwidth=${VLC_ADAPTIVE_WIDTH} --adaptive-maxheight=${VLC_ADAPTIVE_HEIGHT} --adaptive-bw=${VLC_ADAPTIVE_BITRATE} ${VLC_EXTRA_OPTIONS_AUDIO_FILTER} --sout="${SOUT}" vlc://quit
+${VLC} -I telnet --verbose=${VLC_VERBOSE} --no-disable-screensaver --extraintf="rc" --rc-host="127.0.0.1:${VLC_RC_PORT}" ${VLC_AVCODEC_OPTIONS} --no-repeat --no-loop "${VLC_SOURCE_URL}" --network-caching=${VLC_CACHE} --telnet-password="${PASSWORD}" --telnet-port=${PORT} --drop-late-frames --skip-frames --play-and-exit --no-daemon --adaptive-logic="${VLC_ADAPTIVE_LOGIC}" --adaptive-maxwidth=${VLC_ADAPTIVE_WIDTH} --adaptive-maxheight=${VLC_ADAPTIVE_HEIGHT} --adaptive-bw=${VLC_ADAPTIVE_BITRATE} ${VLC_EXTRA_OPTIONS_AUDIO_FILTER} --sout="${SOUT}" vlc://quit
 
 cat << EOF
 Stream Finished: ${VLC_SAP_GROUP}/${VLC_SAP_NAME}
