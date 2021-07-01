@@ -28,11 +28,15 @@ if [ -z "${VLC_THREADS}" ]; then
 fi
 
 if [ -z "${VLC_SAP_GROUP}" ]; then
-    VLC_SAP_GROUP=Streams
+    VLC_SAP_GROUP="Demo Streams"
 fi
 
 if [ -z "${VLC_SAP_NAME}" ]; then
-    VLC_SAP_NAME=Video
+    VLC_SAP_NAME="Demo Video"
+fi
+
+if [ -z "${VLC_SAP_DESCRIPTION}" ]; then
+    VLC_SAP_DESCRIPTION="A demonstration stream."
 fi
 
 if [ -z "${VLC_ASPECT_RATIO}" ]; then
@@ -97,14 +101,13 @@ VLC_SFILTER="audiobargraph_v{barWidth=20,position=1,alarm=1}"
 # VLC_AFILTER="audiobargraph_a{bargraph=1,address=127.0.0.1,port=${VLC_RC_PORT},connection_reset=1,bargraph_repetition=22,silence=1,repetition_time=1000,time_window=10000,alarm_threshold=0.01}"
 VLC_AFILTER="{audiobargraph_a}"
 VLC_VFILTER="canvas{width=${VLC_ADAPTIVE_WIDTH},height=${VLC_ADAPTIVE_HEIGHT},aspect=${VLC_ASPECT_RATIO}}"
-VLC_DESTINATION_RTP="'rtp{proto=udp,mux=ts,ttl=15,dst=${VLC_MULTICAST_IP},port=${VLC_MULTICAST_PORT},sdp=sap://,group=\"${VLC_SAP_GROUP}\",name=\"${VLC_SAP_NAME}\"}'"
-VLC_DESTINATION_STANDARD="standard{access=udp{caching=1000,ttl=15},mux=ts{use-key-frames},dst=${VLC_MULTICAST_IP}:${VLC_MULTICAST_PORT},sap,group=${VLC_SAP_GROUP},name=${VLC_SAP_NAME}}"
-VLC_DESTINATION=${VLC_DESTINATION_STANDARD}
+VLC_DESTINATION_STANDARD="'standard{access=udp{caching=1000,ttl=15},mux=ts{use-key-frames},dst=${VLC_MULTICAST_IP}:${VLC_MULTICAST_PORT},sap,group=\"${VLC_SAP_GROUP}\",name=\"${VLC_SAP_NAME}\"}'"
+VLC_DESTINATION_RTP="'rtp{dst=${VLC_MULTICAST_IP},port=${VLC_MULTICAST_PORT},sdp=sap://,ttl=${VLC_TTL},mux=ts{use-key-frames},proto=udp,name=\"${VLC_SAP_NAME}\",description=\"${VLC_SAP_DESCRIPTION}\",group=\"${VLC_SAP_GROUP}\"}'"
+VLC_DESTINATION="dst=${VLC_DESTINATION_RTP}"
 VLC_SCALE="1"
 
 VLC_EXTRA_OPTIONS_AUDIO_FILTER="--audiobargraph_a-bargraph=1 --audiobargraph_a-bargraph_repetition=1 --audiobargraph_a-silence=1 --audiobargraph_a-repetition_time=1000 --audiobargraph_a-time_window=10000 --audiobargraph_a-alarm_threshold=0.01"
 VLC_AVCODEC_OPTIONS="--avcodec-dr --avcodec-corrupted --avcodec-hurry-up --avcodec-skip-frame=1 --avcodec-skip-idct=1 --avcodec-fast --avcodec-threads=${VLC_THREADS} --sout-avcodec-strict=-2"
-# VLC_AVCODEC_OPTIONS=""
 
 if [ ! -z "$VLC_SFILTER" ]; then
     VLC_SFILTER=",sfilter=${VLC_SFILTER}"
