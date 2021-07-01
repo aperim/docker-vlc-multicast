@@ -60,7 +60,7 @@ if [ -z "${VLC_ADAPTIVE_BITRATE}" ]; then
 fi
 
 if [ -z "${VLC_AUDIO_BITRATE}" ]; then
-    VLC_AUDIO_BITRATE=256
+    VLC_AUDIO_BITRATE=192
 fi
 
 if [ -z "${VLC_AUDIO_CHANNELS}" ]; then
@@ -98,7 +98,7 @@ fi
 VLC_VENC="x264"
 VLC_AENC="ffmpeg"
 VLC_VIDEO_CODEC="h264"
-VLC_AUDIO_CODEC="mp4a"
+VLC_AUDIO_CODEC="mp2a"
 VLC_AUDIO_SAMPLERATE="44100"
 
 VLC_SFILTER="audiobargraph_v{barWidth=20,position=1,alarm=1}"
