@@ -23,7 +23,7 @@ EXPOSE ${PORT}
 RUN export DEBIAN_FRONTEND=noninteractive && \
   apt-get update && \
   apt-get -y upgrade && \
-  apt-get -y install vlc ffmpeg mpg123 && \
+  apt-get -y install vlc ffmpeg mpg123 vlc-plugin-* && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
 
@@ -35,5 +35,12 @@ WORKDIR /vlc
 COPY --chown=vlc:vlc ./start.sh ./
 
 USER vlc
+
+HEALTHCHECK \
+    --interval=1m \
+    --timeout=3s \
+    --start-period=30s \
+    --retries=3 \
+    CMD pidof vlc > /dev/null || exit 1
 
 ENTRYPOINT ./start.sh
