@@ -2,8 +2,14 @@
 
 # [Choice] Debian version: buster, stretch
 ARG VARIANT="buster"
-FROM mcr.microsoft.com/vscode/devcontainers/base:0-${VARIANT}
+# FROM mcr.microsoft.com/vscode/devcontainers/base:0-${VARIANT}
+FROM ubuntu:${VARIANT}
 
 # ** [Optional] Uncomment this section to install additional packages. **
-RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends vlc ffmpeg mpg123 imagemagick
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive && \
+    apt-get -y install --no-install-recommends vlc ffmpeg mpg123 imagemagick zsh curl ca-certificates git gnupg && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    addgroup --gid 1001 vscode && \
+    adduser --home /home/vscode --gecos "VSCode User" --shell /bin/zsh --uid 1001 --gid 1001 --disabled-password vscode && \
+    chown -R vscode:vscode /home/vscode
