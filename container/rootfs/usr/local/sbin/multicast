@@ -113,109 +113,109 @@ VLC_SCALE="1"
 VLC_EXTRA_OPTIONS_AUDIO_FILTER="--audiobargraph_a-bargraph=1 --audiobargraph_a-bargraph_repetition=1 --audiobargraph_a-silence=1 --audiobargraph_a-repetition_time=1000 --audiobargraph_a-time_window=10000 --audiobargraph_a-alarm_threshold=0.01"
 VLC_AVCODEC_OPTIONS="--avcodec-dr --avcodec-corrupted --avcodec-hurry-up --avcodec-skip-frame=1 --avcodec-skip-idct=1 --avcodec-fast --avcodec-threads=${VLC_THREADS} --sout-avcodec-strict=-2"
 
-if [ ! -z "$VLC_SFILTER" ]; then
+if [ -n "$VLC_SFILTER" ]; then
     VLC_SFILTER=",sfilter=${VLC_SFILTER}"
 else
     VLC_SFILTER=""
 fi
 
-if [ ! -z "$VLC_AFILTER" ]; then
+if [ -n "$VLC_AFILTER" ]; then
     VLC_AFILTER=",afilter=${VLC_AFILTER}"
 else
     VLC_AFILTER=""
 fi
 
-if [ ! -z "$VLC_VFILTER" ]; then
+if [ -n "$VLC_VFILTER" ]; then
     VLC_VFILTER=",vfilter=${VLC_VFILTER}"
 else
     VLC_VFILTER=""
 fi
 
-if [ ! -z "$VLC_VIDEO_CODEC" ]; then
+if [ -n "$VLC_VIDEO_CODEC" ]; then
     VLC_VIDEO_CODEC=",vcodec=${VLC_VIDEO_CODEC}"
 else
     VLC_VIDEO_CODEC=""
 fi
 
-if [ ! -z "$VLC_AUDIO_CODEC" ]; then
+if [ -n "$VLC_AUDIO_CODEC" ]; then
     VLC_AUDIO_CODEC=",acodec=${VLC_AUDIO_CODEC}"
 else
     VLC_AUDIO_CODEC=""
 fi
 
-if [ ! -z "$VLC_DESTINATION" ]; then
+if [ -n "$VLC_DESTINATION" ]; then
     VLC_DESTINATION=",dst=${VLC_DESTINATION}"
 else
     VLC_DESTINATION=""
 fi
 
-if [ ! -z "$VLC_X264" ]; then
+if [ -n "$VLC_X264" ]; then
     VLC_X264="${VLC_VENC}{${VLC_X264}}"
 else
     VLC_X264=""
 fi
 
-if [ ! -z "$VLC_VENC" ]; then
+if [ -n "$VLC_VENC" ]; then
     VLC_VENC=",venc=${VLC_X264}"
 else
     VLC_VENC=""
 fi
 
-if [ ! -z "$VLC_AENC" ]; then
+if [ -n "$VLC_AENC" ]; then
     VLC_AENC=",aenc=${VLC_AENC}"
 else
     VLC_AENC=""
 fi
 
-if [ ! -z "$VLC_SCALE" ]; then
+if [ -n "$VLC_SCALE" ]; then
     VLC_SCALE=",scale=${VLC_SCALE}"
 else
     VLC_SCALE=""
 fi
 
-if [ ! -z "$VLC_THREADS" ]; then
+if [ -n "$VLC_THREADS" ]; then
     VLC_THREADS=",threads=${VLC_THREADS}"
 else
     VLC_THREADS=""
 fi
 
-if [ ! -z "$VLC_AUDIO_BITRATE" ]; then
+if [ -n "$VLC_AUDIO_BITRATE" ]; then
     VLC_AUDIO_BITRATE=",ab=${VLC_AUDIO_BITRATE}"
 else
     VLC_AUDIO_BITRATE=""
 fi
 
-if [ ! -z "$VLC_AUDIO_CHANNELS" ]; then
+if [ -n "$VLC_AUDIO_CHANNELS" ]; then
     VLC_AUDIO_CHANNELS=",channels=${VLC_AUDIO_CHANNELS}"
 else
     VLC_AUDIO_CHANNELS=""
 fi
 
-if [ ! -z "$VLC_AUDIO_SAMPLERATE" ]; then
+if [ -n "$VLC_AUDIO_SAMPLERATE" ]; then
     VLC_AUDIO_SAMPLERATE=",samplerate=${VLC_AUDIO_SAMPLERATE}"
 else
     VLC_AUDIO_SAMPLERATE=""
 fi
 
-if [ ! -z "$VLC_FPS" ]; then
+if [ -n "$VLC_FPS" ]; then
     VLC_FPS=",fps=${VLC_FPS}"
 else
     VLC_FPS=""
 fi
 
-if [ ! -z "$VLC_BITRATE" ]; then
+if [ -n "$VLC_BITRATE" ]; then
     VLC_BITRATE=",vb=${VLC_BITRATE}"
 else
     VLC_BITRATE=""
 fi
 
-if [ ! -z "$VLC_ADAPTIVE_WIDTH" ]; then
+if [ -n "$VLC_ADAPTIVE_WIDTH" ]; then
     VLC_WIDTH=",width=${VLC_ADAPTIVE_WIDTH}"
 else
     VLC_WIDTH=""
 fi
 
-if [ ! -z "$VLC_ADAPTIVE_HEIGHT" ]; then
+if [ -n "$VLC_ADAPTIVE_HEIGHT" ]; then
     VLC_HEIGHT=",height=${VLC_ADAPTIVE_HEIGHT}"
 else
     VLC_HEIGHT=""
@@ -223,7 +223,7 @@ fi
 
 SOUT="#transcode{${VLC_THREADS}${VLC_VENC}${VLC_AENC}${VLC_SCALE}${VLC_VIDEO_CODEC}${VLC_AUDIO_CODEC}${VLC_AUDIO_BITRATE}${VLC_AUDIO_SAMPLERATE}${VLC_AUDIO_CHANNELS}${VLC_FPS}${VLC_BITRATE}${VLC_AFILTER}${VLC_SFILTER}${VLC_VFILTER}${VLC_WIDTH}${VLC_HEIGHT}}:duplicate{${VLC_DESTINATION}}"
 
-VLC_COMMAND="${VLC} -I telnet --verbose=${VLC_VERBOSE} --no-disable-screensaver --extraintf=rc --rc-host=127.0.0.1:${VLC_RC_PORT} ${VLC_AVCODEC_OPTIONS} --no-repeat --no-loop ${VLC_SOURCE_URL} --network-caching=${VLC_CACHE} --telnet-password=${PASSWORD} --telnet-port=${PORT} --drop-late-frames --skip-frames --play-and-exit --no-daemon --adaptive-logic="${VLC_ADAPTIVE_LOGIC}" --adaptive-maxwidth=${VLC_ADAPTIVE_WIDTH} --adaptive-maxheight=${VLC_ADAPTIVE_HEIGHT} --adaptive-bw=${VLC_ADAPTIVE_BITRATE} ${VLC_EXTRA_OPTIONS_AUDIO_FILTER} --sout=${SOUT} vlc://quit"
+VLC_COMMAND="${VLC} -I telnet --verbose=${VLC_VERBOSE} --no-disable-screensaver --extraintf=rc --rc-host=127.0.0.1:${VLC_RC_PORT} ${VLC_AVCODEC_OPTIONS} --no-repeat --no-loop ${VLC_SOURCE_URL} --network-caching=${VLC_CACHE} --telnet-password=${PASSWORD} --telnet-port=${PORT} --drop-late-frames --skip-frames --play-and-exit --no-daemon --adaptive-logic=${VLC_ADAPTIVE_LOGIC} --adaptive-maxwidth=${VLC_ADAPTIVE_WIDTH} --adaptive-maxheight=${VLC_ADAPTIVE_HEIGHT} --adaptive-bw=${VLC_ADAPTIVE_BITRATE} ${VLC_EXTRA_OPTIONS_AUDIO_FILTER} --sout=${SOUT} vlc://quit"
 echo "📺 Starting VLC Multicast ${VLC_SOURCE_URL} as ${VLC_SAP_GROUP}/${VLC_SAP_NAME} rtp://@${VLC_MULTICAST_IP}:${VLC_MULTICAST_PORT}"
 echo "🖥 ${VLC_COMMAND}"
 # shellcheck disable=SC2086
