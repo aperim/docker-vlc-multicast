@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-VLC=$(command -v vlc)
+VLC=$(command -v cvlc)
 
 if [ -z "${VLC_SOURCE_URL}" ]; then
     echo "Source URL not defined (VLC_SOURCE_URL)"
@@ -106,7 +106,7 @@ VLC_SFILTER="audiobargraph_v{barWidth=20,position=1,alarm=1}"
 VLC_AFILTER="{audiobargraph_a}"
 VLC_VFILTER="canvas{width=${VLC_ADAPTIVE_WIDTH},height=${VLC_ADAPTIVE_HEIGHT},aspect=${VLC_ASPECT_RATIO}}"
 # VLC_DESTINATION_STANDARD="'standard{access=udp{caching=1000,ttl=15},mux=ts{use-key-frames},dst=${VLC_MULTICAST_IP}:${VLC_MULTICAST_PORT},sap,group=\"${VLC_SAP_GROUP}\",name=\"${VLC_SAP_NAME}\"}'"
-VLC_DESTINATION_RTP="'rtp{dst=${VLC_MULTICAST_IP},port=${VLC_MULTICAST_PORT},sdp=sap://,ttl=${VLC_TTL},mux=ts{use-key-frames},proto=udp,name=\"${VLC_SAP_NAME}\",description=\"${VLC_SAP_DESCRIPTION}\",group=\"${VLC_SAP_GROUP}\"}'"
+VLC_DESTINATION_RTP="'rtp{dst=${VLC_MULTICAST_IP},port=${VLC_MULTICAST_PORT},sdp=sap://,ttl=${VLC_TTL},mux=ts{use-key-frames},proto=udp,name=\\\"${VLC_SAP_NAME}\\\",description=\\\"${VLC_SAP_DESCRIPTION}\\\",group=\\\"${VLC_SAP_GROUP}\\\"}'"
 VLC_DESTINATION=${VLC_DESTINATION_RTP}
 VLC_SCALE="1"
 
@@ -223,7 +223,7 @@ fi
 
 SOUT="#transcode{${VLC_THREADS}${VLC_VENC}${VLC_AENC}${VLC_SCALE}${VLC_VIDEO_CODEC}${VLC_AUDIO_CODEC}${VLC_AUDIO_BITRATE}${VLC_AUDIO_SAMPLERATE}${VLC_AUDIO_CHANNELS}${VLC_FPS}${VLC_BITRATE}${VLC_AFILTER}${VLC_SFILTER}${VLC_VFILTER}${VLC_WIDTH}${VLC_HEIGHT}}:duplicate{${VLC_DESTINATION}}"
 
-VLC_COMMAND="${VLC} -I telnet --verbose=${VLC_VERBOSE} --no-disable-screensaver --extraintf=rc --rc-host=127.0.0.1:${VLC_RC_PORT} ${VLC_AVCODEC_OPTIONS} --no-repeat --no-loop ${VLC_SOURCE_URL} --network-caching=${VLC_CACHE} --telnet-password=${PASSWORD} --telnet-port=${PORT} --drop-late-frames --skip-frames --play-and-exit --no-daemon --adaptive-logic=${VLC_ADAPTIVE_LOGIC} --adaptive-maxwidth=${VLC_ADAPTIVE_WIDTH} --adaptive-maxheight=${VLC_ADAPTIVE_HEIGHT} --adaptive-bw=${VLC_ADAPTIVE_BITRATE} ${VLC_EXTRA_OPTIONS_AUDIO_FILTER} --sout=${SOUT} vlc://quit"
+VLC_COMMAND="${VLC} -I telnet --no-media-library --verbose=\"${VLC_VERBOSE}\" --no-disable-screensaver --extraintf=rc --rc-host=\"127.0.0.1:${VLC_RC_PORT}\" ${VLC_AVCODEC_OPTIONS} --no-repeat --no-loop --network-caching=\"${VLC_CACHE}\" --telnet-password=\"${PASSWORD}\" --telnet-port=${PORT} --drop-late-frames --skip-frames --play-and-exit --no-daemon --adaptive-logic=\"${VLC_ADAPTIVE_LOGIC}\" --adaptive-maxwidth=\"${VLC_ADAPTIVE_WIDTH}\" --adaptive-maxheight=\"${VLC_ADAPTIVE_HEIGHT}\" --adaptive-bw=\"${VLC_ADAPTIVE_BITRATE}\" ${VLC_EXTRA_OPTIONS_AUDIO_FILTER} --sout=\"${SOUT}\" \"${VLC_SOURCE_URL}\" vlc://quit"
 echo "📺 Starting VLC Multicast ${VLC_SOURCE_URL} as ${VLC_SAP_GROUP}/${VLC_SAP_NAME} rtp://@${VLC_MULTICAST_IP}:${VLC_MULTICAST_PORT}"
 echo "🖥 ${VLC_COMMAND}"
 # shellcheck disable=SC2086
