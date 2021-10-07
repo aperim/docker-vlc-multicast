@@ -91,8 +91,8 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            ghcr.io/aperim/vlc-mosaic3x3
-            aperimau/vlc-mosaic3x3
+            ghcr.io/aperim/vlc-multicast
+            aperimau/vlc-multicast
           # generate Docker tags based on the following events/attributes
           tags: |
             type=schedule
@@ -175,7 +175,7 @@ jobs:
         run: |
           if vcn authenticate \
             --output json \
-            "docker://ghcr.io/aperim/vlc-mosaic3x3:sha-${{ needs.information.outputs.sha_short }}" \
+            "docker://ghcr.io/aperim/vlc-multicast:sha-${{ needs.information.outputs.sha_short }}" \
             | jq \
               --exit-status \
               '.verification.status != 0';
@@ -183,7 +183,7 @@ jobs:
             vcn login
             vcn notarize \
               --public \
-              "docker://ghcr.io/aperim/vlc-mosaic3x3:sha-${{ needs.information.outputs.sha_short }}"
+              "docker://ghcr.io/aperim/vlc-multicast:sha-${{ needs.information.outputs.sha_short }}"
           fi
         # yamllint enable rule:line-length
         env:
