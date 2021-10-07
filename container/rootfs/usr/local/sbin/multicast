@@ -231,7 +231,7 @@ VLC_COMMAND=( "-I" "telnet" "--no-media-library" "--verbose" "${VLC_VERBOSE}" "-
 echo "📺 Starting VLC Multicast ${VLC_SOURCE_URL} as ${VLC_SAP_GROUP}/${VLC_SAP_NAME} rtp://@${VLC_MULTICAST_IP}:${VLC_MULTICAST_PORT}"
 echo "🖥 ${VLC_COMMAND[@]}"
 # shellcheck disable=SC2086
-nice -n -20 ${VLC} "${VLC_COMMAND[@]}" &
+nice -n -20 ${VLC} ${VLC_COMMAND[@]} &
 vlcpid=$!
 echo "🆔 VLC Running as PID ${vlcpid}"
 wait "$vlcpid"
