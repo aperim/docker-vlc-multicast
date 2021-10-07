@@ -1,5 +1,5 @@
 {
-    "name": "Docker VLC Multicaster",
-    "description": "Generates a multicast stream from any given (valid) input",
-    "vendor": "Aperim Pty Ltd"
+  "name": "Docker VLC Multicaster",
+  "description": "Generates a multicast stream from any given (valid) input",
+  "vendor": "Aperim Pty Ltd"
 }
