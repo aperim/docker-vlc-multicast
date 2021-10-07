@@ -221,19 +221,15 @@ else
     VLC_HEIGHT=""
 fi
 
-
 SOUT="#transcode{${VLC_THREADS}${VLC_VENC}${VLC_AENC}${VLC_SCALE}${VLC_VIDEO_CODEC}${VLC_AUDIO_CODEC}${VLC_AUDIO_BITRATE}${VLC_AUDIO_SAMPLERATE}${VLC_AUDIO_CHANNELS}${VLC_FPS}${VLC_BITRATE}${VLC_AFILTER}${VLC_SFILTER}${VLC_VFILTER}${VLC_WIDTH}${VLC_HEIGHT}}:duplicate{${VLC_DESTINATION}}"
 
-cat << EOF
-Streaming: ${VLC_SAP_GROUP}/${VLC_SAP_NAME}
-Multicast: rtp://@${VLC_MULTICAST_IP}:${VLC_MULTICAST_PORT}
-Source: ${VLC_SOURCE_URL}
-SOUT: ${SOUT}
-EOF
-
-${VLC} -I telnet --verbose=${VLC_VERBOSE} --no-disable-screensaver --extraintf="rc" --rc-host="127.0.0.1:${VLC_RC_PORT}" ${VLC_AVCODEC_OPTIONS} --no-repeat --no-loop "${VLC_SOURCE_URL}" --network-caching=${VLC_CACHE} --telnet-password="${PASSWORD}" --telnet-port=${PORT} --drop-late-frames --skip-frames --play-and-exit --no-daemon --adaptive-logic="${VLC_ADAPTIVE_LOGIC}" --adaptive-maxwidth=${VLC_ADAPTIVE_WIDTH} --adaptive-maxheight=${VLC_ADAPTIVE_HEIGHT} --adaptive-bw=${VLC_ADAPTIVE_BITRATE} ${VLC_EXTRA_OPTIONS_AUDIO_FILTER} --sout="${SOUT}" vlc://quit
-
-cat << EOF
-Stream Finished: ${VLC_SAP_GROUP}/${VLC_SAP_NAME}
-Source of completed stream: ${VLC_SOURCE_URL}
-EOF
+VLC_COMMAND="${VLC} -I telnet --verbose=${VLC_VERBOSE} --no-disable-screensaver --extraintf=rc --rc-host=127.0.0.1:${VLC_RC_PORT} ${VLC_AVCODEC_OPTIONS} --no-repeat --no-loop ${VLC_SOURCE_URL} --network-caching=${VLC_CACHE} --telnet-password=${PASSWORD} --telnet-port=${PORT} --drop-late-frames --skip-frames --play-and-exit --no-daemon --adaptive-logic="${VLC_ADAPTIVE_LOGIC}" --adaptive-maxwidth=${VLC_ADAPTIVE_WIDTH} --adaptive-maxheight=${VLC_ADAPTIVE_HEIGHT} --adaptive-bw=${VLC_ADAPTIVE_BITRATE} ${VLC_EXTRA_OPTIONS_AUDIO_FILTER} --sout=${SOUT} vlc://quit"
+echo "📺 Starting VLC Multicast ${VLC_SOURCE_URL} as ${VLC_SAP_GROUP}/${VLC_SAP_NAME} rtp://@${VLC_MULTICAST_IP}:${VLC_MULTICAST_PORT}"
+echo "🖥 ${VLC_COMMAND}"
+# shellcheck disable=SC2086
+nice -n -20 ${VLC_COMMAND} &
+vlcpid=$!
+echo "🆔 VLC Running as PID ${vlcpid}"
+wait "$vlcpid"
+rm -f "${HOME}"/vlc/mosaic.vlm
+echo "👋 Finished VLC Multicast rtp://@${VLC_MULTICAST_IP}:${VLC_MULTICAST_PORT}"
