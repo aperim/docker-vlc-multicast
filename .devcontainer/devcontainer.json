@@ -12,10 +12,7 @@
   // Set *default* container specific settings.json values on container create.
   "settings": {},
   // Add the IDs of extensions you want installed when the container is created.
-  "extensions": [
-    "foxundermoon.shell-format",
-    "yzhang.markdown-all-in-one"
-  ],
+  "extensions": ["foxundermoon.shell-format", "yzhang.markdown-all-in-one"],
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   // "forwardPorts": [],
   // Uncomment to use the Docker CLI from inside the container. See https://aka.ms/vscode-remote/samples/docker-from-docker.
@@ -23,11 +20,7 @@
   // Uncomment when using a ptrace-based debugger like C++, Go, and Rust
   // "runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],
   "postCreateCommand": "sh -c \"$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)\" \"\" --unattended",
-  "runArgs": [
-    "--network=host",
-    "--env-file",
-    ".env"
-  ],
+  "runArgs": ["--network=host", "--env-file", ".env"],
   // Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
   "remoteUser": "vscode"
 }
